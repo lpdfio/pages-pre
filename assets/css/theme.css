@@ -1,0 +1,163 @@
+/* ── tier accent tokens ──
+   Tiers used to carry three unrelated hues, two of which belong to other products
+   in the set. They now step in weight through the one brand colour, on a constant
+   brand edge: Community is outlined in it with a muted label, Professional is
+   outlined in it with a brand label, Enterprise is filled with it. The edge is what
+   says "this is a tier"; the label and the fill are what say which one.
+
+   --brand-text exists because --brand is chosen against the 3:1 bar a mark is held
+   to, while a pill label is text at 4.5:1. It clears that on the dark card at 5.12
+   but only reaches 3.41 on the light one, so the light theme carries the same hue
+   down in lightness until it passes.
+
+   --brand-on is dark, not white. It is the colour of anything sitting *on* the brand
+   fill — the filled Enterprise pill, the CTA hover — and white there measured 3.21
+   against that fill, below the 4.5 a label this size needs, which made the filled
+   pill the one element on the page under the text bar. This tone clears it at 4.76
+   without touching the fill, so the ladder keeps its weight where it belongs, in the
+   fill rather than the label. It stays on the brand hue rather than going to a
+   neutral black, which at 5.32 reads as hazard tape rather than as a brand.
+
+   Mirrored in the portal's `portal.css` — keep the two in step. */
+:root {
+    --color-community-border: oklch(0.65 0.12 45);
+    --color-community-badge:  oklch(0.62 0.14 43);
+
+    --brand-text: oklch(0.565 0.15 55);
+    --brand-on:   oklch(0.25 0.06 55);
+}
+
+[data-theme="dark"] {
+    --color-community-border: oklch(0.60 0.10 45);
+    --color-community-badge:  oklch(0.57 0.12 43);
+
+    --brand-text: var(--brand);
+}
+
+/* ── tier-card-wrap — reserves space above card for floating top badge ── */
+.tier-card-wrap {
+    position: relative;
+    padding-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.tier-card__top-badge {
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    z-index: 1;
+}
+
+/* ── tier-card — neutral border, no colored background ── */
+.tier-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2.5rem 1.75rem 1.75rem;
+    border-radius: 14px;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    flex: 1;
+}
+
+/* ── tier label pill inside the card: outlined, outlined, filled ──
+   All three sit on the same brand edge, which is what says "this is a tier". Weight then
+   steps through the label and the fill: Community muted, Professional in the brand, Enterprise
+   filled with it. Community carried a grey edge until it stopped reading as part of the same
+   set as the two beside it. Mirrored in the portal's `portal.css`. */
+.tier-label {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 0.2em 0.7em;
+    border: 1px solid transparent;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+.tier-label--community    { border-color: var(--brand);  color: var(--text-muted); }
+.tier-label--professional { border-color: var(--brand);  color: var(--brand-text); }
+.tier-label--enterprise   { background: var(--brand); border-color: var(--brand); color: var(--brand-on); }
+
+/* ── top badge pill (outlined, straddles card border) ── */
+.tier-top-pill {
+    display: inline-block;
+    padding: 0.2em 0.8em;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border: 1.5px solid;
+    background: var(--bg);
+}
+/* "Recommended" is the only top badge that argues for something, so it takes the
+   brand. The rest state a fact and stay neutral. Keeping the recommendation out of
+   the tier ladder is what lets it move to another tier without repainting one. */
+.tier-top-pill--community    { color: var(--text-muted); border-color: var(--border); }
+.tier-top-pill--professional { color: var(--brand-text); border-color: var(--brand); }
+.tier-top-pill--enterprise   { color: var(--text-muted); border-color: var(--border); }
+
+/* ── price ──
+   A price is a number to be read, not a shape to be looked at, which is a different
+   job from the wordmark's and now has a different face. The mono gives every digit
+   one width, so a column of prices lines up whatever the amounts are, and a 9 can
+   never be mistaken for anything else. The display face it replaced made "Free" and
+   "Quote" read as small logos beside it. */
+.tier-price {
+    font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+}
+
+/* The currency symbol used to be set in Tahoma, because the old display face drew a
+   poor one. The mono's own is fine, so it inherits and the price is one face again. */
+.tier-currency {
+    font-weight: 500;
+    font-size: 0.75em;
+    vertical-align: top;
+    padding-top: calc(0.18em + 1px);
+    color: var(--text-muted);
+}
+
+/* ── CTA base — outline, fills with tier color on hover ── */
+.tier-card__cta {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6875rem 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid;
+    cursor: pointer;
+    font-family: var(--rl-font-sans);
+    text-decoration: none;
+    background: transparent;
+    transition: background .15s, color .15s, transform .08s;
+}
+.tier-card__cta:active { transform: translateY(1px); }
+
+/* One button treatment for all three, since the tier is already stated by the pill
+   above it and a per-tier button colour only re-said it in a third hue. Brand
+   outline, brand fill on hover. */
+.tier-card__cta {
+    color: var(--brand-text);
+    border-color: color-mix(in oklch, var(--brand) 50%, var(--border));
+}
+.tier-card__cta:hover {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: var(--brand-on);
+}
