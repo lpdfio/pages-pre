@@ -1,0 +1,1 @@
+import{t as e}from"./code-languages.myhMg5in.js";document.addEventListener(e,e=>{let t=e.detail;for(let e of document.querySelectorAll(`lpdf-lang-links`)){let n=[...e.querySelectorAll(`[data-code-lang]`)];if(n.some(e=>e.dataset.codeLang===t))for(let e of n)e.hidden=e.dataset.codeLang!==t}});
