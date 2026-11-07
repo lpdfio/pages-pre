@@ -1,0 +1,1 @@
+var e=`starlight-synced-tabs__lang`,t=`lpdf:code-lang`;export{e as n,t};
